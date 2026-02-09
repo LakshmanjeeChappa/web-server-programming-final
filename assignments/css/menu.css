@@ -1,0 +1,96 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgb(225, 250, 235);
+}
+
+
+
+.menu-bar {
+  background-color: rgb(45, 165, 80);
+}
+
+.menu {
+  list-style: none;
+  display: flex;
+  padding-left: 10px;
+}
+
+.menu-item {
+  position: relative;
+}
+
+.menu-item button {
+  background: none;
+  border: none;
+  padding: 10px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+
+.menu-item.active button {
+  font-weight: bold;
+}
+
+
+.dropdown {
+  list-style: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 160px;
+  background-color: rgb(60, 190, 95);
+  display: none;
+}
+
+.dropdown a {
+  display: block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: black;
+}
+
+.dropdown a:hover {
+  background-color: rgb(90, 220, 120);
+}
+
+
+.menu-item:hover .dropdown {
+  display: block;
+}
+
+
+.edit:focus-within .dropdown {
+  display: block;
+}
+
+
+
+.content {
+  max-width: 1200px;
+  margin: 30px auto;
+}
+
+.card {
+  background-color: white;
+  padding: 18px;
+  margin-bottom: 30px;
+}
+
+.instructions {
+  border-left: 5px solid rgb(45, 165, 80);
+}
+
+.extra {
+  border-left: 5px solid rgb(245, 245, 90);
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
