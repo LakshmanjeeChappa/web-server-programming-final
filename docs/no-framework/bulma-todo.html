@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bulma Todo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar is-primary">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="#">
+      Bulma: a modern CSS framework
+    </a>
+  </div>
+
+  <div class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item">Home</a>
+      <a class="navbar-item">Docs</a>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <a class="button is-light">Tweet</a>
+          <a class="button is-light">Download</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<section class="section">
+  <div class="container">
+    <div class="columns">
+
+      <!-- LEFT COLUMN -->
+      <div class="column is-one-quarter">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              Component
+            </p>
+          </header>
+
+          <div class="card-content">
+            <div class="content">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Phasellus nec iaculis mauris.
+              <br><br>
+              11:09 PM - 1 Jan 2016
+            </div>
+          </div>
+
+          <footer class="card-footer">
+            <a href="#" class="card-footer-item">Save</a>
+            <a href="#" class="card-footer-item">Edit</a>
+            <a href="#" class="card-footer-item">Delete</a>
+          </footer>
+        </div>
+      </div>
+
+      <!-- MIDDLE COLUMN -->
+      <div class="column is-half">
+
+        <!-- Tabs -->
+        <div class="tabs is-boxed">
+          <ul>
+            <li class="is-active"><a>Current</a></li>
+            <li><a>Completed</a></li>
+            <li><a>Upcoming</a></li>
+            <li><a>All</a></li>
+          </ul>
+        </div>
+
+        <!-- Panel -->
+        <article class="panel">
+          <div class="panel-block">
+            <input class="input" type="text" placeholder="New Task">
+          </div>
+          <a class="panel-block">
+            <input type="checkbox" checked />
+            Make Bulma great again
+          </a>
+          <a class="panel-block">
+            <input type="checkbox" />
+            Add some more features
+          </a>
+          <a class="panel-block">
+            <input type="checkbox" />
+            Make a github account
+          </a>
+          <a class="panel-block">
+            <input type="checkbox" />
+            Learn how to use github
+          </a>
+          <a class="panel-block">
+            <input type="checkbox" />
+            add a .gitignore file
+          </a>
+        </article>
+
+        <br>
+
+        <!-- Message -->
+        <article class="message is-primary">
+          <div class="message-header">
+            <p>Make a github account</p>
+          </div>
+          <div class="message-body">
+            Go to github.com and create an account.
+            <progress class="progress is-success" value="60" max="100">60%</progress>
+          </div>
+        </article>
+
+        <br>
+
+        <!-- Form Box -->
+        <form class="box">
+          <div class="field">
+            <label class="label">Name</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="Text input">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Email</label>
+            <div class="control">
+              <input class="input" type="email" placeholder="Email input">
+            </div>
+          </div>
+
+          <div class="field is-grouped">
+            <div class="control">
+              <button class="button is-link">Submit</button>
+            </div>
+            <div class="control">
+              <button class="button is-link is-light">Cancel</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="column is-one-quarter">
+        <aside class="menu">
+          <p class="menu-label">General</p>
+          <ul class="menu-list">
+            <li><a>Dashboard</a></li>
+            <li><a>Customers</a></li>
+          </ul>
+
+          <p class="menu-label">Administration</p>
+          <ul class="menu-list">
+            <li><a>Team Settings</a></li>
+            <li><a class="is-active">Manage Your Team</a></li>
+            <li><a>Invitations</a></li>
+            <li><a>Authentication</a></li>
+          </ul>
+
+          <p class="menu-label">Transactions</p>
+          <ul class="menu-list">
+            <li><a>Payments</a></li>
+            <li><a>Transfers</a></li>
+            <li><a>Balance</a></li>
+          </ul>
+        </aside>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
