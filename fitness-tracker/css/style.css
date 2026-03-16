@@ -1,0 +1,138 @@
+body{
+font-family: "Segoe UI", Arial, sans-serif;
+margin:0;
+background:#f2f4f7;
+color:#333;
+}
+
+.container{
+max-width:1000px;
+margin:auto;
+padding:20px;
+}
+
+nav{
+background:#62bfa6;
+padding:15px;
+display:flex;
+gap:20px;
+align-items:center;
+margin-bottom:25px;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+font-weight:500;
+}
+
+nav a:hover{
+text-decoration:underline;
+}
+
+button{
+background:#4aa68d;
+border:none;
+color:white;
+padding:6px 12px;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#3b8d76;
+}
+
+input, select{
+padding:6px;
+margin:5px;
+border:1px solid #ccc;
+border-radius:4px;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:8px;
+box-shadow:0 2px 6px rgba(0,0,0,0.1);
+margin-bottom:20px;
+}
+
+ul{
+list-style:none;
+padding:0;
+}
+
+li{
+display:flex;
+justify-content:space-between;
+padding:10px;
+border-bottom:1px solid #eee;
+}
+
+.stat-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:25px;
+margin-top:20px;
+}
+
+.stat{
+text-align:center;
+}
+
+.stat h2{
+font-size:40px;
+margin:0;
+color:#62bfa6;
+}
+
+.stat p{
+margin:0;
+opacity:0.7;
+}
+
+
+.activity-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#ffffff;
+padding:12px 15px;
+border-radius:6px;
+margin-bottom:8px;
+box-shadow:0 1px 3px rgba(0,0,0,0.1);
+}
+
+.activity-info{
+font-weight:500;
+}
+
+.activity-buttons button{
+margin-left:8px;
+}
+
+.stats-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+margin-top:20px;
+}
+
+.stat-tile{
+background:#ffffff;
+padding:30px;
+border-radius:10px;
+text-align:center;
+box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+.stat-number{
+font-size:42px;
+font-weight:700;
+color:#62bfa6;
+}
+
+.stat-label{
+opacity:0.7;
+}
