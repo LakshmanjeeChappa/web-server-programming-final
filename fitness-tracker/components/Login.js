@@ -47,6 +47,12 @@ template:`
 
 <p style="color:red">{{error}}</p>
 
+<p style="margin-top:10px; font-size:14px; color:#555;">
+Demo Accounts:<br>
+Admin → <b>admin</b> / <b>123</b><br>
+User → <b>john</b> / <b>123</b>
+</p>
+
 </div>
 
 </div>
