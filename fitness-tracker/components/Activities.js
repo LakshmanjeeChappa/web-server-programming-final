@@ -78,15 +78,11 @@ template:`
 
 <li v-for="a in userActivities" class="activity-row">
 
-<span class="activity-info">
-{{a.type}} - {{a.duration}} mins
-</span>
+<span>{{a.type}} - {{a.duration}} mins</span>
 
 <div class="activity-buttons">
-
 <button @click="editActivity(a)">Edit</button>
 <button @click="deleteActivity(a.id)">Delete</button>
-
 </div>
 
 </li>

@@ -19,17 +19,22 @@ template:`
 
 <nav>
 
+<div class="nav-left">
+<strong style="color:white">Fitness Tracker</strong>
+
 <router-link to="/activities">My Activity</router-link>
-
 <router-link to="/stats">Statistics</router-link>
-
 <router-link to="/friends">Friends Activity</router-link>
 
 <router-link v-if="store.currentUser.role==='admin'" to="/admin">
 Admin
 </router-link>
+</div>
 
-<button @click="logout">Log out</button>
+<div class="nav-right">
+<span>{{store.currentUser.name}}</span>
+<button @click="logout">Logout</button>
+</div>
 
 </nav>
 
