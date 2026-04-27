@@ -16,3 +16,8 @@ router.get("/profile", verifyToken, (req, res) => {
     user: req.user
   });
 });
+
+
+
+router.get("/", verifyToken, userController.getAllUsers);
+router.delete("/:id", verifyToken, userController.deleteUser);

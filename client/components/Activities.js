@@ -1,114 +1,109 @@
-import { store } from "../services/dataService.js"
+import { apiRequest } from "../services/api.js";
 
 export default {
 
-data(){
-return{
-store,
-type:"",
-duration:"",
-editingId:null
-}
-},
+  data() {
+    return {
+      activities: [],
+      type: "",
+      duration: "",
+      editingId: null
+    };
+  },
 
-computed:{
+  async mounted() {
+    this.loadActivities();
+  },
 
-userActivities(){
-return store.activities.filter(a =>
-a.userId === store.currentUser.id
-)
-}
+  methods: {
 
-},
+    async loadActivities() {
+      this.activities = await apiRequest("/api/activities");
+    },
 
-methods:{
+    async addActivity() {
+      await apiRequest("/api/activities", "POST", {
+        type: this.type,
+        duration: Number(this.duration),
+        date: new Date().toISOString().split("T")[0]
+      });
 
-addActivity(){
+      this.type = "";
+      this.duration = "";
 
-store.activities.push({
-id:Date.now(),
-userId:store.currentUser.id,
-type:this.type,
-duration:Number(this.duration),
-date:new Date().toISOString().split("T")[0]
-})
+      this.loadActivities();
+    },
 
-this.type=""
-this.duration=""
+    async deleteActivity(id) {
+      await apiRequest(`/api/activities/${id}`, "DELETE");
+      this.loadActivities();
+    },
 
-},
+    editActivity(activity) {
+      this.type = activity.type;
+      this.duration = activity.duration;
+      this.editingId = activity.id;
+    },
 
-deleteActivity(id){
-const index = store.activities.findIndex(a=>a.id===id)
-store.activities.splice(index,1)
-},
+    async updateActivity() {
+      await apiRequest(`/api/activities/${this.editingId}`, "PUT", {
+        type: this.type,
+        duration: Number(this.duration),
+        date: new Date().toISOString().split("T")[0]
+      });
 
-editActivity(activity){
-this.type=activity.type
-this.duration=activity.duration
-this.editingId=activity.id
-},
+      this.type = "";
+      this.duration = "";
+      this.editingId = null;
 
-updateActivity(){
+      this.loadActivities();
+    }
 
-const activity = store.activities.find(a=>a.id===this.editingId)
+  },
 
-activity.type=this.type
-activity.duration=Number(this.duration)
+  template: `
 
-this.type=""
-this.duration=""
-this.editingId=null
+  <div>
 
-}
+    <div class="container">
 
-},
+      <div class="card">
 
-template:`
+        <h2>Your Activities</h2>
 
-<div>
+        <ul>
 
-<div class="container">
+          <li v-for="a in activities" :key="a.id" class="activity-row">
 
-<div class="card">
+            <span>{{a.type}} - {{a.duration}} mins</span>
 
-<h2>Your Activities</h2>
+            <div class="activity-buttons">
+              <button @click="editActivity(a)">Edit</button>
+              <button @click="deleteActivity(a.id)">Delete</button>
+            </div>
 
-<ul>
+          </li>
 
-<li v-for="a in userActivities" class="activity-row">
+        </ul>
 
-<span>{{a.type}} - {{a.duration}} mins</span>
+      </div>
 
-<div class="activity-buttons">
-<button @click="editActivity(a)">Edit</button>
-<button @click="deleteActivity(a.id)">Delete</button>
-</div>
+      <div class="card">
 
-</li>
+        <h3 v-if="editingId==null">Add Activity</h3>
+        <h3 v-else>Edit Activity</h3>
 
-</ul>
+        <input v-model="type" placeholder="Activity">
+        <input v-model="duration" placeholder="Duration">
 
-</div>
+        <button v-if="editingId==null" @click="addActivity">Add</button>
+        <button v-else @click="updateActivity">Update</button>
 
-<div class="card">
+      </div>
 
-<h3 v-if="editingId==null">Add Activity</h3>
-<h3 v-else>Edit Activity</h3>
+    </div>
 
-<input v-model="type" placeholder="Activity">
+  </div>
 
-<input v-model="duration" placeholder="Duration">
-
-<button v-if="editingId==null" @click="addActivity">Add</button>
-
-<button v-else @click="updateActivity">Update</button>
-
-</div>
-
-</div>
-
-</div>
-
-`
-}
+  `
+};

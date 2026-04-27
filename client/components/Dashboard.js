@@ -1,57 +1,30 @@
-import { store } from "../services/dataService.js"
+import { apiRequest } from "../services/api.js";
 
 export default {
 
-data(){
-return{store}
-},
+  data() {
+    return {
+      activities: []
+    };
+  },
 
-methods:{
-logout(){
-store.currentUser=null
-this.$router.push("/")
-}
-},
+  async mounted() {
+    this.activities = await apiRequest("/api/activities");
+  },
 
-template:`
+  computed: {
+    totalDuration() {
+      return this.activities.reduce((sum, a) => sum + a.duration, 0);
+    }
+  },
 
-<div>
-
-<nav>
-
-<div class="nav-left">
-<strong style="color:white">Fitness Tracker</strong>
-
-<router-link to="/activities">My Activity</router-link>
-<router-link to="/stats">Statistics</router-link>
-<router-link to="/friends">Friends Activity</router-link>
-
-<router-link v-if="store.currentUser.role==='admin'" to="/admin">
-Admin
-</router-link>
-</div>
-
-<div class="nav-right">
-<span>{{store.currentUser.name}}</span>
-<button @click="logout">Logout</button>
-</div>
-
-</nav>
-
-<div class="container">
-
-<div class="card">
-
-<h2>Welcome {{store.currentUser.name}}</h2>
-
-<p>Track your workouts and monitor your progress.</p>
-
-</div>
-
-</div>
-
-</div>
-
-`
-
-}
+  template: `
+  <div class="container">
+    <div class="card">
+      <h2>Dashboard</h2>
+      <p>Total Activities: {{activities.length}}</p>
+      <p>Total Duration: {{totalDuration}} mins</p>
+    </div>
+  </div>
+  `
+};

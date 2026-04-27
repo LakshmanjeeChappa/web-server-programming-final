@@ -1,61 +1,58 @@
-import { store } from "../services/dataService.js"
+import { apiRequest } from "../services/api.js";
 
 export default {
 
-data(){
-return{
-username:"",
-password:"",
-error:""
-}
-},
+  data() {
+    return {
+      username: "",
+      password: "",
+      error: ""
+    };
+  },
 
-methods:{
+  methods: {
 
-login(){
+    async login() {
+      const res = await apiRequest("/api/users/login", "POST", {
+        username: this.username,
+        password: this.password
+      });
 
-const user = store.users.find(u =>
-u.username === this.username &&
-u.password === this.password
-)
+      if (res.token) {
+        localStorage.setItem("token", res.token);
+        this.$router.push("/dashboard");
+      } else {
+        this.error = "Login failed";
+      }
+    }
 
-if(user){
-store.currentUser = user
-this.$router.push("/dashboard")
-}
-else{
-this.error="Invalid login"
-}
+  },
 
-}
+  template: `
 
-},
+  <div class="container">
 
-template:`
+    <div class="card">
 
-<div class="container">
+      <h2>Fitness Tracker Login</h2>
 
-<div class="card">
+      <input v-model="username" placeholder="Username">
 
-<h2>Fitness Tracker Login</h2>
+      <input v-model="password" type="password" placeholder="Password">
 
-<input v-model="username" placeholder="Username">
+      <button @click="login">Login</button>
 
-<input v-model="password" type="password" placeholder="Password">
+      <p style="color:red">{{error}}</p>
 
-<button @click="login">Login</button>
+      <p style="margin-top:10px; font-size:14px; color:#555;">
+      Demo Accounts:<br>
+      Admin → <b>admin</b> / <b>123</b><br>
+      User → <b>john</b> / <b>123</b>
+      </p>
 
-<p style="color:red">{{error}}</p>
+    </div>
 
-<p style="margin-top:10px; font-size:14px; color:#555;">
-Demo Accounts:<br>
-Admin → <b>admin</b> / <b>123</b><br>
-User → <b>john</b> / <b>123</b>
-</p>
+  </div>
 
-</div>
-
-</div>
-
-`
-}
+  `
+};
