@@ -1,5 +1,4 @@
-const API_URL = "https://fitness-tracker-pb94.onrender.com";
-
+const API_URL = "";
 export async function apiRequest(path, method = "GET", data = null) {
   const token = localStorage.getItem("token");
 
