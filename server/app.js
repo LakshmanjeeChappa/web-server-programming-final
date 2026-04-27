@@ -58,7 +58,7 @@ async function createTables() {
   }
 }
 
-createTables();
+ //createTables();
 
 // start server
 const PORT = process.env.PORT || 5000;
