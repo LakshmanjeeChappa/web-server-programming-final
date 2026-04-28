@@ -20,23 +20,17 @@ app.get("/api", (req, res) => {
   res.send("API is running");
 });
 
-// serve frontend (static files)
+// serve frontend
 app.use(express.static(path.join(__dirname, "../client")));
 
-// ✅ FIXED fallback (does NOT break JS files)
+// fallback
 app.get("*", (req, res) => {
   if (!req.path.startsWith("/api") && !req.path.includes(".")) {
     res.sendFile(path.join(__dirname, "../client/index.html"));
   }
 });
 
-// start server
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
+// ✅ DB + tables BEFORE server start
 const db = require("./db/connection");
 
 async function createTables() {
@@ -67,4 +61,11 @@ async function createTables() {
   }
 }
 
-createTables();
+// 🚀 START SERVER ONLY AFTER DB READY
+const PORT = process.env.PORT || 5000;
+
+createTables().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+});
