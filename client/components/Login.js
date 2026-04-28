@@ -13,19 +13,28 @@ export default {
   methods: {
 
     async login() {
-      const res = await apiRequest("/api/users/login", "POST", {
-        username: this.username,
-        password: this.password
-      });
+  try {
+    const res = await apiRequest("/api/users/login", "POST", {
+      username: this.username,
+      password: this.password
+    });
 
-      if (res.token) {
-        localStorage.setItem("token", res.token);
-        this.$router.push("/dashboard");
-      } else {
-        this.error = "Login failed";
-      }
+    console.log("LOGIN RESPONSE:", res); // keep this for debugging
+
+    if (res.token) {
+      localStorage.setItem("token", res.token);
+      localStorage.setItem("user", JSON.stringify(res.user)); // ✅ THIS WAS MISSING
+
+      this.$router.push("/dashboard");
+    } else {
+      this.error = "Login failed";
     }
 
+  } catch (err) {
+    console.log("LOGIN ERROR:", err);
+    this.error = "Login failed";
+  }
+}
   },
 
   template: `
