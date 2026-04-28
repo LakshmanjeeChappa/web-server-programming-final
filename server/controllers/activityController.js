@@ -1,10 +1,11 @@
 const activityModel = require("../models/activityModel");
 
+// ADD
 async function addActivity(req, res) {
   try {
     const { type, duration, date } = req.body;
 
-    const user_id = req.user.id; 
+    const user_id = 1;
 
     await activityModel.createActivity({
       user_id,
@@ -21,9 +22,10 @@ async function addActivity(req, res) {
   }
 }
 
+// GET
 async function getMyActivities(req, res) {
   try {
-    const user_id = req.user.id;
+    const user_id = 1;
 
     const activities = await activityModel.getActivitiesByUser(user_id);
 
@@ -34,15 +36,11 @@ async function getMyActivities(req, res) {
   }
 }
 
-module.exports = {
-  addActivity,
-  getMyActivities
-};
-
+// UPDATE
 async function updateActivity(req, res) {
   try {
     const id = req.params.id;
-    const user_id = req.user.id;
+    const user_id = 1;
 
     await activityModel.updateActivity(id, user_id, req.body);
 
@@ -53,10 +51,11 @@ async function updateActivity(req, res) {
   }
 }
 
+// DELETE
 async function deleteActivity(req, res) {
   try {
     const id = req.params.id;
-    const user_id = req.user.id;
+    const user_id = 1;
 
     await activityModel.deleteActivity(id, user_id);
 
@@ -67,9 +66,10 @@ async function deleteActivity(req, res) {
   }
 }
 
+// FRIENDS
 async function getFriendsActivities(req, res) {
   try {
-    const user_id = req.user.id;
+    const user_id = 1;
 
     const [rows] = await require("../db/connection").query(
       "SELECT * FROM activities WHERE user_id != ?",
@@ -83,10 +83,11 @@ async function getFriendsActivities(req, res) {
   }
 }
 
+// ✅ SINGLE EXPORT ONLY
 module.exports = {
   addActivity,
   getMyActivities,
   updateActivity,
   deleteActivity,
-  getFriendsActivities   
+  getFriendsActivities
 };
