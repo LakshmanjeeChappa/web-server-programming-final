@@ -19,15 +19,16 @@ export default {
       password: this.password
     });
 
-    console.log("LOGIN RESPONSE:", res); // keep this for debugging
+    console.log("FULL RESPONSE:", res);
 
-    if (res.token) {
+    // 🔥 DO NOT rely only on res.token
+    if (res && res.token) {
       localStorage.setItem("token", res.token);
-      localStorage.setItem("user", JSON.stringify(res.user)); // ✅ THIS WAS MISSING
+      localStorage.setItem("user", JSON.stringify(res.user));
 
-      this.$router.push("/dashboard");
+      window.location.hash = "#/dashboard"; // 🔥 FORCE NAVIGATION
     } else {
-      this.error = "Login failed";
+      this.error = res.error || "Login failed";
     }
 
   } catch (err) {
