@@ -21,14 +21,14 @@ export default {
 
     console.log("FULL RESPONSE:", res);
 
-    // 🔥 DO NOT rely only on res.token
     if (res && res.token) {
       localStorage.setItem("token", res.token);
       localStorage.setItem("user", JSON.stringify(res.user));
 
-      window.location.hash = "#/dashboard"; // 🔥 FORCE NAVIGATION
+      // 🔥 FORCE NAVIGATION (this is the fix)
+      window.location.hash = "#/dashboard";
     } else {
-      this.error = res.error || "Login failed";
+      this.error = "Login failed";
     }
 
   } catch (err) {
