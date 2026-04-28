@@ -24,16 +24,7 @@ async function register(req, res) {
   }
 }
 
-// LOGIN (DEMO — NO DB)
-async function login(req, res) {
-  try {
-    const { username, password } = req.body;
-
-    // ✅ DEMO LOGIN (NO DB)
-    if (
-      (username === "admin" && password === "123") ||
-      (username === "john" && password === "123")
-    ) 
+// LOGIN (FORCED SUCCESS)
 async function login(req, res) {
   return res.json({
     token: "demo-token",
@@ -42,12 +33,6 @@ async function login(req, res) {
       username: "admin"
     }
   });
-}
-    return res.status(401).json({ error: "Invalid credentials" });
-
-  } catch (error) {
-    res.status(500).json({ error: "Server error" });
-  }
 }
 
 // GET USERS
@@ -78,7 +63,7 @@ async function deleteUser(req, res) {
   }
 }
 
-// EXPORTS (ONLY ONCE — AT BOTTOM)
+// EXPORTS (ONLY ONCE)
 module.exports = {
   register,
   login,
