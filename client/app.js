@@ -1,4 +1,5 @@
 import { routes, protectRoute } from "./router.js";
+import { store } from "./services/dataService.js";
 
 const router = VueRouter.createRouter({
   history: VueRouter.createWebHashHistory(),
@@ -7,10 +8,10 @@ const router = VueRouter.createRouter({
 
 protectRoute(router);
 
-// ✅ ADD THIS PART HERE
+// ✅ restore user properly
 const savedUser = localStorage.getItem("user");
 if (savedUser) {
-  window.currentUser = JSON.parse(savedUser);
+  store.currentUser = JSON.parse(savedUser);
 }
 
 const app = Vue.createApp({});

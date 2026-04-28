@@ -12,7 +12,7 @@ export default {
 
   methods: {
 
-    async login() {
+   async login() {
   try {
     const res = await apiRequest("/api/users/login", "POST", {
       username: this.username,
@@ -25,8 +25,11 @@ export default {
       localStorage.setItem("token", res.token);
       localStorage.setItem("user", JSON.stringify(res.user));
 
-      // 🔥 FORCE NAVIGATION (this is the fix)
-      window.location.hash = "#/dashboard";
+      // 🔥 THIS LINE WAS MISSING (CRITICAL)
+      const { store } = await import("../services/dataService.js");
+      store.currentUser = res.user;
+
+      this.$router.push("/dashboard");
     } else {
       this.error = "Login failed";
     }
