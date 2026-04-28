@@ -33,16 +33,16 @@ async function login(req, res) {
     if (
       (username === "admin" && password === "123") ||
       (username === "john" && password === "123")
-    ) {
-      return res.json({
-        token: "demo-token",
-        user: {
-          id: username === "admin" ? 1 : 2,
-          username
-        }
-      });
+    ) 
+async function login(req, res) {
+  return res.json({
+    token: "demo-token",
+    user: {
+      id: 1,
+      username: "admin"
     }
-
+  });
+}
     return res.status(401).json({ error: "Invalid credentials" });
 
   } catch (error) {
