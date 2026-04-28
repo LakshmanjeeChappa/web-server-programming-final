@@ -241,3 +241,10 @@ li {
     max-width: 100%;
   }
 }
+
+.brand {
+  font-size: 21px;
+  font-weight: 800;
+  color: #ffffff !important;
+  margin-right: 18px;
+}

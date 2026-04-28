@@ -23,24 +23,27 @@ const app = Vue.createApp({
     }
   },
   template: `
-    <div>
-      <nav v-if="store.currentUser">
-        <div class="brand">ActivePulse</div>
-        <div class="links">
-          <router-link to="/dashboard">Dashboard</router-link>
-          <router-link to="/workouts">Workouts</router-link>
-          <router-link to="/goals">Goals</router-link>
-          <router-link to="/types">Exercise Types</router-link>
-          <router-link v-if="store.currentUser.role === 'admin'" to="/admin">Admin</router-link>
-        </div>
-        <div class="user-area">
-          <span>{{store.currentUser.name}} ({{store.currentUser.role}})</span>
-          <button @click="logoutUser">Logout</button>
-        </div>
-      </nav>
-      <router-view></router-view>
-    </div>
-  `
+  <div>
+    <nav v-if="store.currentUser">
+      <div class="nav-left">
+        <router-link to="/dashboard" class="brand">ActivePulse</router-link>
+
+        <router-link to="/dashboard">Dashboard</router-link>
+        <router-link to="/workouts">Workouts</router-link>
+        <router-link to="/goals">Goals</router-link>
+        <router-link to="/types">Exercise Types</router-link>
+        <router-link v-if="store.currentUser.role === 'admin'" to="/admin">Admin</router-link>
+      </div>
+
+      <div class="nav-right">
+        <span>{{store.currentUser.name}} ({{store.currentUser.role}})</span>
+        <button @click="logoutUser">Logout</button>
+      </div>
+    </nav>
+
+    <router-view></router-view>
+  </div>
+`
 });
 
 app.use(router);
