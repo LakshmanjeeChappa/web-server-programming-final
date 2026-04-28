@@ -1,89 +1,54 @@
-const activityModel = require("../models/activityModel");
+let activities = [];
+let idCounter = 1;
 
 // ADD
 async function addActivity(req, res) {
-  try {
-    const { type, duration, date } = req.body;
+  const { type, duration, date } = req.body;
 
-    const user_id = 1;
+  const newActivity = {
+    id: idCounter++,
+    user_id: 1,
+    type,
+    duration,
+    date
+  };
 
-    await activityModel.createActivity({
-      user_id,
-      type,
-      duration,
-      date
-    });
+  activities.push(newActivity);
 
-    res.json({ message: "Activity added" });
-
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Server error" });
-  }
+  res.json(newActivity);
 }
 
 // GET
 async function getMyActivities(req, res) {
-  try {
-    const user_id = 1;
-
-    const activities = await activityModel.getActivitiesByUser(user_id);
-
-    res.json(activities);
-
-  } catch (error) {
-    res.status(500).json({ error: "Server error" });
-  }
+  res.json(activities);
 }
 
 // UPDATE
 async function updateActivity(req, res) {
-  try {
-    const id = req.params.id;
-    const user_id = 1;
+  const id = Number(req.params.id);
 
-    await activityModel.updateActivity(id, user_id, req.body);
-
-    res.json({ message: "Activity updated" });
-
-  } catch (error) {
-    res.status(500).json({ error: "Server error" });
+  const activity = activities.find(a => a.id === id);
+  if (activity) {
+    Object.assign(activity, req.body);
   }
+
+  res.json({ message: "Updated" });
 }
 
 // DELETE
 async function deleteActivity(req, res) {
-  try {
-    const id = req.params.id;
-    const user_id = 1;
+  const id = Number(req.params.id);
 
-    await activityModel.deleteActivity(id, user_id);
+  activities = activities.filter(a => a.id !== id);
 
-    res.json({ message: "Activity deleted" });
-
-  } catch (error) {
-    res.status(500).json({ error: "Server error" });
-  }
+  res.json({ message: "Deleted" });
 }
 
 // FRIENDS
 async function getFriendsActivities(req, res) {
-  try {
-    const user_id = 1;
-
-    const [rows] = await require("../db/connection").query(
-      "SELECT * FROM activities WHERE user_id != ?",
-      [user_id]
-    );
-
-    res.json(rows);
-
-  } catch (error) {
-    res.status(500).json({ error: "Server error" });
-  }
+  res.json([]);
 }
 
-// ✅ SINGLE EXPORT ONLY
 module.exports = {
   addActivity,
   getMyActivities,

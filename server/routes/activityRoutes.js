@@ -3,7 +3,6 @@ const router = express.Router();
 
 const activityController = require("../controllers/activityController");
 
-// NO AUTH (for submission)
 router.post("/", activityController.addActivity);
 router.get("/", activityController.getMyActivities);
 router.put("/:id", activityController.updateActivity);
