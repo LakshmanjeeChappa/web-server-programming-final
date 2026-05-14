@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@vueuse/core": "^14.3.0",
+    "vue3-simple-typeahead": "^1.0.11"
+  }
+}

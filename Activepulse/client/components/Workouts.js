@@ -8,12 +8,32 @@ export default {
       form: this.emptyForm(),
       editingId: null,
       error: "",
-      message: ""
+      message: "",
+
+      page: 1,
+      limit: 6,
+      total: 0,
+      loading: false,
+      hasMore: true
     };
   },
+
   async mounted() {
-    await this.loadData();
+    await this.loadTypes();
+    await this.loadMoreWorkouts();
+
+    VueUse.useInfiniteScroll(
+      this.$refs.workoutScroll,
+      async () => {
+        await this.loadMoreWorkouts();
+      },
+      {
+        distance: 120,
+        canLoadMore: () => this.hasMore && !this.loading
+      }
+    );
   },
+
   methods: {
     emptyForm() {
       return {
@@ -25,23 +45,60 @@ export default {
         notes: ""
       };
     },
-    async loadData() {
+
+    async loadTypes() {
       try {
-        this.workouts = await apiRequest("/api/workouts");
         this.types = await apiRequest("/api/exercise-types");
       } catch (error) {
         this.error = error.message;
       }
     },
+
+    async loadMoreWorkouts() {
+      if (this.loading || !this.hasMore) return;
+
+      try {
+        this.loading = true;
+
+        const data = await apiRequest(
+          `/api/workouts?page=${this.page}&limit=${this.limit}`
+        );
+
+        this.workouts.push(...data.workouts);
+        this.total = data.total;
+        this.page++;
+
+        if (this.workouts.length >= this.total) {
+          this.hasMore = false;
+        }
+
+      } catch (error) {
+        this.error = error.message;
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async resetWorkouts() {
+      this.workouts = [];
+      this.page = 1;
+      this.total = 0;
+      this.hasMore = true;
+      await this.loadMoreWorkouts();
+    },
+
     async saveWorkout() {
       try {
         this.error = "";
+        this.message = "";
+
         const payload = {
           ...this.form,
           exercise_type_id: this.form.exercise_type_id || null,
           duration: Number(this.form.duration),
           calories: Number(this.form.calories || 0)
         };
+
         if (this.editingId) {
           await apiRequest(`/api/workouts/${this.editingId}`, "PUT", payload);
           this.message = "Workout updated";
@@ -49,14 +106,18 @@ export default {
           await apiRequest("/api/workouts", "POST", payload);
           this.message = "Workout added";
         }
+
         this.cancelEdit();
-        await this.loadData();
+        await this.resetWorkouts();
+
       } catch (error) {
         this.error = error.message;
       }
     },
+
     editWorkout(workout) {
       this.editingId = workout.id;
+
       this.form = {
         title: workout.title,
         exercise_type_id: workout.exercise_type_id || "",
@@ -66,51 +127,95 @@ export default {
         notes: workout.notes || ""
       };
     },
+
     cancelEdit() {
       this.editingId = null;
       this.form = this.emptyForm();
     },
+
     async deleteWorkout(id) {
       try {
         await apiRequest(`/api/workouts/${id}`, "DELETE");
-        await this.loadData();
+        await this.resetWorkouts();
       } catch (error) {
         this.error = error.message;
       }
     }
   },
+
   template: `
     <main class="container two-column">
       <section class="card">
         <h1>{{editingId ? 'Edit Workout' : 'Log Workout'}}</h1>
+
         <input v-model="form.title" placeholder="Workout title, e.g. Morning run" />
+
         <select v-model="form.exercise_type_id">
           <option value="">Select exercise type</option>
-          <option v-for="type in types" :key="type.id" :value="type.id">{{type.name}}</option>
+          <option v-for="type in types" :key="type.id" :value="type.id">
+            {{type.name}}
+          </option>
         </select>
+
         <input v-model="form.duration" type="number" placeholder="Duration in minutes" />
         <input v-model="form.calories" type="number" placeholder="Calories burned" />
         <input v-model="form.workout_date" type="date" />
         <textarea v-model="form.notes" placeholder="Notes"></textarea>
-        <button @click="saveWorkout">{{editingId ? 'Update Workout' : 'Add Workout'}}</button>
-        <button class="secondary" v-if="editingId" @click="cancelEdit">Cancel</button>
+
+        <button @click="saveWorkout">
+          {{editingId ? 'Update Workout' : 'Add Workout'}}
+        </button>
+
+        <button class="secondary" v-if="editingId" @click="cancelEdit">
+          Cancel
+        </button>
+
         <p class="error" v-if="error">{{error}}</p>
         <p class="success" v-if="message">{{message}}</p>
       </section>
 
       <section class="card">
         <h1>My Workouts</h1>
-        <p class="muted" v-if="workouts.length === 0">No workouts logged yet.</p>
-        <div class="item" v-for="workout in workouts" :key="workout.id">
-          <div>
-            <strong>{{workout.title}}</strong>
-            <p>{{workout.exercise_type || 'General'}} · {{workout.duration}} mins · {{workout.calories}} cal</p>
-            <small>{{String(workout.workout_date).split('T')[0]}} {{workout.notes ? '— ' + workout.notes : ''}}</small>
+
+        <p class="muted">
+          Showing {{workouts.length}} of {{total}} workouts
+        </p>
+
+        <div ref="workoutScroll" class="infinite-list">
+          <p class="muted" v-if="workouts.length === 0 && !loading">
+            No workouts logged yet.
+          </p>
+
+          <div class="item" v-for="workout in workouts" :key="workout.id">
+            <div>
+              <strong>{{workout.title}}</strong>
+
+              <p>
+                {{workout.exercise_type || 'General'}} ·
+                {{workout.duration}} mins ·
+                {{workout.calories}} cal
+              </p>
+
+              <small>
+                {{String(workout.workout_date).split('T')[0]}}
+                {{workout.notes ? '— ' + workout.notes : ''}}
+              </small>
+            </div>
+
+            <div class="actions">
+              <button @click="editWorkout(workout)">Edit</button>
+              <button class="danger" @click="deleteWorkout(workout.id)">
+                Delete
+              </button>
+            </div>
           </div>
-          <div class="actions">
-            <button @click="editWorkout(workout)">Edit</button>
-            <button class="danger" @click="deleteWorkout(workout.id)">Delete</button>
-          </div>
+
+          <div v-if="loading" class="skeleton-box"></div>
+          <div v-if="loading" class="skeleton-box small"></div>
+
+          <p class="muted" v-if="!hasMore && workouts.length > 0">
+            You reached the end.
+          </p>
         </div>
       </section>
     </main>
