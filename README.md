@@ -4,7 +4,7 @@
 Fitness Tracker Final Project
 
 Live Site:
-https://fitness-tracker-pb94.onrender.com/#/
+https://ser-7q1h.onrender.com
 
 Branch: main
 
