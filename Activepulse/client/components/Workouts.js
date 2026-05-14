@@ -210,8 +210,13 @@ export default {
             </div>
           </div>
 
-          <div v-if="loading" class="skeleton-box"></div>
-          <div v-if="loading" class="skeleton-box small"></div>
+          <div v-if="loading" class="skeleton-lines">
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+          
 
           <p class="muted" v-if="!hasMore && workouts.length > 0">
             You reached the end.

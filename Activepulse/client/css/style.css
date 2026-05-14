@@ -264,22 +264,39 @@ li {
   border-radius: 20px;
 }
 
-.skeleton-box {
-  height: 82px;
-  border-radius: 14px;
-  margin: 12px 0;
+.skeleton-lines {
+  margin-top: 16px;
+}
+
+.skeleton-lines div {
+  height: 14px;
+  border-radius: 10px;
+  margin-bottom: 12px;
   background: linear-gradient(
     90deg,
     rgba(255,255,255,0.08),
     rgba(255,255,255,0.18),
     rgba(255,255,255,0.08)
   );
+
   background-size: 200% 100%;
   animation: skeleton-loading 1.2s infinite;
 }
 
-.skeleton-box.small {
-  height: 55px;
+.skeleton-lines div:nth-child(1) {
+  width: 100%;
+}
+
+.skeleton-lines div:nth-child(2) {
+  width: 95%;
+}
+
+.skeleton-lines div:nth-child(3) {
+  width: 90%;
+}
+
+.skeleton-lines div:nth-child(4) {
+  width: 40%;
 }
 
 @keyframes skeleton-loading {
